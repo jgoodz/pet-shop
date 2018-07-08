@@ -24,13 +24,10 @@ App = {
   },
 
   initWeb3: function() {
-    /*
-     * Replace me...
-     */
      if(typeof web3 !== "undefined") {
         App.web3Provider = web3.currentProvider
      } else {
-        App.web3Provider = new Web3.web3Providers.HttpProvider('http://localhost:8545')
+        App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545')
      }
      web3 = new Web3(App.web3Provider)
 
@@ -38,13 +35,10 @@ App = {
   },
 
   initContract: function() {
-    /*
-     * Replace me...
-     */
-    $.getJSON('Acoption.json', function(data{
+    $.getJSON('Adoption.json', function(data){
       var AdoptionArtifact = data 
       App.contracts.Adoption = TruffleContract(AdoptionArtifact)
-      App.initContract.Adoption.setProvider(App.web3Provider)
+      App.contracts.Adoption.setProvider(App.web3Provider)
       return App.markAdopted()
     })
     return App.bindEvents();
@@ -55,9 +49,6 @@ App = {
   },
 
   markAdopted: function(adopters, account) {
-    /*
-     * Replace me...
-     */
      var adoptionInstance
      App.contracts.Adoption.deployed().then(function(instance){
         adoptionInstance = instance
@@ -65,7 +56,7 @@ App = {
      }).then(function(adopters){
           for(var i = 0; i < adopters.length; i++){
             if(adopters[i] !== '0x0000000000000000000000000000000000000000'){
-                $('panel-pet').eq(i).find('button').text('Success').attr('disabled', true)
+                $('.panel-pet').eq(i).find('button').text('Success').attr('disabled', true)
             }
           }
      }).catch(function(err){
@@ -81,10 +72,10 @@ App = {
     var adtionInstance 
 
     web3.eth.getAccounts(function(err, accounts){
-        if (err) console.log(err)
+        if(err) console.log(err)
         var account = accounts[0]
 
-      App.contracts.Adoption.deployed().thenn(function(instance){
+      App.contracts.Adoption.deployed().then(function(instance){
           adoptionInstance = instance
           return adoptionInstance.adopt(petId, {from: account})
       }).then(function(result){
